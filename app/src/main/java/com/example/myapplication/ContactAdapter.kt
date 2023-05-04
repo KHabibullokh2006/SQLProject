@@ -4,13 +4,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 
-class ContactAdapter(var list:MutableList<Contact>) : RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
+class ContactAdapter(var list:MutableList<Contact>, var contInterface: ContactInterface) : RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
 
     class ContactHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         var name:TextView = itemView.findViewById(R.id.name)
         var phone:TextView = itemView.findViewById(R.id.phone)
+        var contactlayout:ConstraintLayout = itemView.findViewById(R.id.cont_lay)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
@@ -19,10 +21,21 @@ class ContactAdapter(var list:MutableList<Contact>) : RecyclerView.Adapter<Conta
     }
 
     override fun onBindViewHolder(holder: ContactHolder, position: Int) {
-        TODO("Not yet implemented")
+        var item = list[position]
+        holder.name.text = item.name
+        holder.phone.text = item.phone
+        holder.contactlayout.setOnClickListener {
+            contInterface.onClick(item)
+        }
     }
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    interface ContactInterface{
+        fun onClick(contact: Contact){
+
+        }
     }
 }

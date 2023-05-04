@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.myapplication.databinding.FragmentViewBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,8 +34,19 @@ class ViewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_view, container, false)
+        val binding = FragmentViewBinding.inflate(inflater, container, false)
+
+        val contact = arguments?.getSerializable("contact") as Contact
+
+        binding.name.text = contact.name
+        binding.phone.text = contact.phone
+
+        binding.delete.setOnClickListener {
+            var myDialog = Dialog()
+            var manager = parentFragmentManager
+            myDialog.show(manager,"myDialog")
+        }
+        return binding.root
     }
 
     companion object {
