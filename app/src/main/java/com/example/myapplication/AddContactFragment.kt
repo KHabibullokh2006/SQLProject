@@ -32,6 +32,19 @@ class AddContactFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentAddContactBinding.inflate(inflater, container, false)
+        var dbHelper = DBHelper(requireContext())
+
+        var name:String = binding.name.text.toString()
+        var phone:String = binding.phone.text.toString()
+        var contact = Contact(name = name, phone = phone)
+
+        binding.check.setOnClickListener {
+            dbHelper.addContact(contact)
+            findNavController().navigate(R.id.action_addContactFragment_to_contactsFragment)
+        }
+
+
+
         binding.back.setOnClickListener {
             findNavController().navigate(R.id.action_addContactFragment_to_contactsFragment)
         }

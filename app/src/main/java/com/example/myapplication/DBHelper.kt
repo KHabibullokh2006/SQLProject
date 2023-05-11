@@ -11,7 +11,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
     }
 
     override fun onCreate(p0: SQLiteDatabase?) {
-        var query = "create table 'contact'('id' integer NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'age' INTEGER NOT NULL, 'phone_number' INTEGER NOT NULL)"
+        var query = "create table 'contact'('id' integer NOT NULL PRIMARY KEY AUTOINCREMENT, 'name' TEXT NOT NULL, 'phone_number' INTEGER NOT NULL)"
         p0?.execSQL(query)
     }
 
@@ -26,4 +26,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
         cv.put("phone_number", contact.phone)
         writabledb.insert("contact",null,cv)
     }
+
+
+
 }
