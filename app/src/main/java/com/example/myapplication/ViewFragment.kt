@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentViewBinding
 
 // TODO: Rename parameter arguments, choose names that match
@@ -35,16 +36,18 @@ class ViewFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentViewBinding.inflate(inflater, container, false)
-
+        val db = DBHelper(requireContext())
         val contact = arguments?.getSerializable("contact") as Contact
 
         binding.name.text = contact.name
         binding.phone.text = contact.phone
 
         binding.delete.setOnClickListener {
-            var myDialog = Dialog()
-            var manager = parentFragmentManager
-            myDialog.show(manager,"myDialog")
+//            var myDialog = Dialog()
+//            var manager = parentFragmentManager
+//            myDialog.show(manager,"myDialog")
+            db.deleteContact(contact)
+            findNavController().navigate(R.id.action_viewFragment_to_contactsFragment)
         }
         return binding.root
     }

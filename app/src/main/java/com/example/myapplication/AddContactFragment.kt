@@ -43,8 +43,6 @@ class AddContactFragment : Fragment() {
             findNavController().navigate(R.id.action_addContactFragment_to_contactsFragment)
         }
 
-
-
         binding.back.setOnClickListener {
             findNavController().navigate(R.id.action_addContactFragment_to_contactsFragment)
         }

@@ -21,7 +21,11 @@
         android:id="@+id/viewFragment"
         android:name="com.example.myapplication.ViewFragment"
         android:label="fragment_view"
-        tools:layout="@layout/fragment_view" />
+        tools:layout="@layout/fragment_view" >
+        <action
+            android:id="@+id/action_viewFragment_to_contactsFragment"
+            app:destination="@id/contactsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/addContactFragment"
         android:name="com.example.myapplication.AddContactFragment"

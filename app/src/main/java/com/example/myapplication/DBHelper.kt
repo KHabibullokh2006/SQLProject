@@ -1,8 +1,11 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteException
 import android.database.sqlite.SQLiteOpenHelper
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
@@ -24,9 +27,44 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
         var cv = ContentValues()
         cv.put("name", contact.name)
         cv.put("phone_number", contact.phone)
+
         writabledb.insert("contact",null,cv)
+
     }
 
+    fun deleteContact(contact: Contact){
+        val db = this.writableDatabase
+        val contentValues = ContentValues()
+        contentValues.put("id",contact.id)
 
+        db.delete("contact","id="+contact.id,null)
+    }
+
+    @SuppressLint("Range")
+    fun getContacts():MutableList<Contact>{
+        var readable = this.readableDatabase
+        var list = mutableListOf<Contact>()
+        var query = "SELECT * FROM 'contact'"
+        var cursor : Cursor? = null
+        try{
+            cursor = readable.rawQuery(query,null)
+        }catch (e: SQLiteException) {
+            readable.execSQL(query)
+            return list
+        }
+        var contactId: Int
+        var contactName: String
+        var contactNumber: String
+        if (cursor.moveToFirst()){
+            do {
+                contactId = cursor.getInt(cursor.getColumnIndex("id"))
+                contactName = cursor.getString(cursor.getColumnIndex("name"))
+                contactNumber = cursor.getString(cursor.getColumnIndex("phone_number"))
+                val emp= Contact(id = contactId, name = contactName, phone = contactNumber)
+                list.add(emp)
+            }while (cursor.moveToNext())
+        }
+        return list
+    }
 
 }

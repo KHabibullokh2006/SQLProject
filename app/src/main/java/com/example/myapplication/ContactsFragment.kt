@@ -35,21 +35,9 @@ class ContactsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentContactsBinding.inflate(inflater, container, false)
-        val mydb = DBHelper(requireContext())
+        val db = DBHelper(requireContext())
 
-
-        contacts.add(Contact(name = "Muhammadali Eshonov", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Sarvar Abdug’aniyev", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Abbos Donaboyev", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Asilbek Taksi", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Rustam sartarosh", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Shovkat qo’shni", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Bobur Mavlonov", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Abdurahim Qassob", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Alisherni akasi", phone = "+99897 565 71 73"))
-        contacts.add(Contact(name = "Noma’lum shaxs", phone = "+99897 565 71 73"))
-
-
+        contacts = db.getContacts()
 
         if (contacts.isEmpty()){
             binding.box.visibility = View.VISIBLE
@@ -70,12 +58,8 @@ class ContactsFragment : Fragment() {
             findNavController().navigate(R.id.action_contactsFragment_to_addContactFragment)
         }
 
-
-
         return binding.root
     }
-
-
 
     companion object {
 
