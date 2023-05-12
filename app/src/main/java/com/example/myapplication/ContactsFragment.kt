@@ -58,6 +58,16 @@ class ContactsFragment : Fragment() {
             findNavController().navigate(R.id.action_contactsFragment_to_addContactFragment)
         }
 
+        binding.toolbar.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.search ->{
+                    var filter = mutableListOf<Contact>()
+
+                }
+            }
+            true
+        }
+
         return binding.root
     }
 

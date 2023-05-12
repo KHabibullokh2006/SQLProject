@@ -44,7 +44,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
     fun getContacts():MutableList<Contact>{
         var readable = this.readableDatabase
         var list = mutableListOf<Contact>()
-        var query = "SELECT * FROM 'contact'"
+        var query = "SELECT * FROM contact"
         var cursor : Cursor? = null
         try{
             cursor = readable.rawQuery(query,null)
