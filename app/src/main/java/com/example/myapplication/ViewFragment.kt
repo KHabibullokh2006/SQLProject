@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentViewBinding
 import java.util.jar.Manifest
@@ -41,6 +43,8 @@ class ViewFragment : Fragment() {
         val db = DBHelper(requireContext())
         val contact = arguments?.getSerializable("contact") as Contact
 
+
+
         binding.name.text = contact.name
         binding.phone.text = contact.phone
 
@@ -53,7 +57,7 @@ class ViewFragment : Fragment() {
         }
 
         binding.edit.setOnClickListener {
-
+            findNavController().navigate(R.id.action_viewFragment_to_editContactFragment)
         }
 
 

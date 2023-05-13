@@ -40,6 +40,16 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
         db.delete("contact","id="+contact.id,null)
     }
 
+    fun editContact(contact: Contact){
+        val writabledb = this.writableDatabase
+        var cv = ContentValues()
+        cv.put("name", contact.name)
+        cv.put("phone_number", contact.phone)
+
+        writabledb.update("contact",cv,"id="+contact.id,null)
+
+    }
+
     @SuppressLint("Range")
     fun getContacts():MutableList<Contact>{
         var readable = this.readableDatabase
