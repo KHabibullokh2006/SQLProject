@@ -24,6 +24,8 @@ class ContactsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val db = DBHelper(requireContext())
+        contacts = db.getContacts()
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
@@ -35,9 +37,9 @@ class ContactsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentContactsBinding.inflate(inflater, container, false)
-        val db = DBHelper(requireContext())
 
-        contacts = db.getContacts()
+
+
 
         if (contacts.isEmpty()){
             binding.box.visibility = View.VISIBLE

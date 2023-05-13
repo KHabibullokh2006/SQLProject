@@ -49,10 +49,9 @@ class ViewFragment : Fragment() {
         binding.phone.text = contact.phone
 
         binding.delete.setOnClickListener {
-//            var myDialog = Dialog()
-//            var manager = parentFragmentManager
-//            myDialog.show(manager,"myDialog")
-            db.deleteContact(contact)
+            var myDialog = Dialog(contact)
+            var manager = parentFragmentManager
+            myDialog.show(manager,"myDialog")
             findNavController().navigate(R.id.action_viewFragment_to_contactsFragment)
         }
 
