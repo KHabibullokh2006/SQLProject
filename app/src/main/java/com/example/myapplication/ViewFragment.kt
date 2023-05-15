@@ -1,5 +1,8 @@
 package com.example.myapplication
 
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,9 +11,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentViewBinding
+import java.security.Permission
 import java.util.jar.Manifest
 
 // TODO: Rename parameter arguments, choose names that match
@@ -50,6 +55,7 @@ class ViewFragment : Fragment() {
 
         var list:MutableList<Contact> = db.getContacts()
 
+
         for (i in list.indices){
             if (list[i].id == id){
                 contact = list[i]
@@ -71,6 +77,19 @@ class ViewFragment : Fragment() {
         binding.edit.setOnClickListener {
             val id = bundleOf("id" to contact.id)
             findNavController().navigate(R.id.action_viewFragment_to_editContactFragment,id)
+        }
+
+        binding.call.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(android.Manifest.permission.CALL_PHONE),1)
+            }
+            else{
+                if (binding.phone.text.toString() != ""){
+                    val call = Intent(Intent.ACTION_CALL)
+                    call.data = Uri.parse("tel:${binding.phone.text}")
+                    requireActivity().startActivity(call)
+                }
+            }
         }
 
 

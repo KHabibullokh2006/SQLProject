@@ -1,13 +1,13 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
-import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.example.myapplication.databinding.FragmentContactsBinding
@@ -47,7 +47,7 @@ class ContactsFragment : Fragment() {
             binding.box.visibility = View.VISIBLE
         }
         else{
-            var adapter = ContactAdapter(contacts, object : ContactAdapter.ContactInterface{
+            var adapter = ContactAdapter(contacts, requireContext(), requireActivity(), object : ContactAdapter.ContactInterface{
                 override fun onClick(contact: Contact) {
                     val bundle = bundleOf("contact" to contact.id)
                     findNavController().navigate(R.id.action_contactsFragment_to_viewFragment,bundle)
@@ -64,9 +64,36 @@ class ContactsFragment : Fragment() {
         binding.toolbar.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.search ->{
-                    var filter = mutableListOf<Contact>()
+                    object  : SearchView.OnQueryTextListener{
+                        override fun onQueryTextSubmit(query: String?): Boolean {
+                            return false
+                        }
 
+                        override fun onQueryTextChange(newText: String?): Boolean {
+                            var filter = mutableListOf<Contact>()
+                            for (item in contacts){
+                                if (newText != null) {
+                                    if (item.name.toLowerCase().contains(newText.toLowerCase())){
+                                        filter.add(item)
+                                    }
+                                }
+                            }
+                            if (filter.isEmpty()){
+                                Toast.makeText(requireContext(), "No Data Found..", Toast.LENGTH_SHORT).show()
+                            }else{
+                                var adapter = ContactAdapter(filter, requireContext(), requireActivity(), object : ContactAdapter.ContactInterface{
+                                    override fun onClick(contact: Contact) {
+                                        val bundle = bundleOf("contact" to contact.id)
+                                        findNavController().navigate(R.id.action_contactsFragment_to_viewFragment,bundle)
+                                    }
 
+                                })
+                                binding.contactRv.adapter = adapter
+                            }
+                            return true
+                        }
+
+                    }
 
                 }
             }

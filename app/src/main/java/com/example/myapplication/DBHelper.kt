@@ -42,7 +42,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
 
     fun editContact(contact: Contact){
         val writabledb = this.writableDatabase
-        var cv = ContentValues()
+        val cv = ContentValues()
         cv.put("name", contact.name)
         cv.put("phone_number", contact.phone)
 
