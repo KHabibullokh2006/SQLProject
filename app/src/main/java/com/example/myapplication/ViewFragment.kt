@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -27,6 +28,8 @@ class ViewFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    lateinit var contact: Contact
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -41,22 +44,33 @@ class ViewFragment : Fragment() {
     ): View? {
         val binding = FragmentViewBinding.inflate(inflater, container, false)
         val db = DBHelper(requireContext())
-        val contact = arguments?.getSerializable("contact") as Contact
+        val id = arguments?.getInt("contact")?.toInt()
+        Log.d("TAG", id.toString())
 
+
+        var list:MutableList<Contact> = db.getContacts()
+
+        for (i in list.indices){
+            if (list[i].id == id){
+                contact = list[i]
+                Log.d("AAA", "I found a contact")
+            }
+        }
 
 
         binding.name.text = contact.name
         binding.phone.text = contact.phone
 
         binding.delete.setOnClickListener {
-            var myDialog = Dialog(contact)
-            var manager = parentFragmentManager
+            val myDialog = Dialog(contact)
+            val manager = parentFragmentManager
             myDialog.show(manager,"myDialog")
             findNavController().navigate(R.id.action_viewFragment_to_contactsFragment)
         }
 
         binding.edit.setOnClickListener {
-            findNavController().navigate(R.id.action_viewFragment_to_editContactFragment)
+            val id = bundleOf("id" to contact.id)
+            findNavController().navigate(R.id.action_viewFragment_to_editContactFragment,id)
         }
 
 

@@ -12,21 +12,35 @@ import com.example.myapplication.databinding.FragmentEditContactBinding
 
 class EditContactFragment : Fragment() {
 
+    lateinit var contact: Contact
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentEditContactBinding.inflate(inflater, container, false)
-//        val contact = arguments?.getSerializable("contact") as Contact
-//
-//        Log.d("TAG", contact.name)
-//
-//        binding.name.setText(contact.name)
-//        binding.phone.setText(contact.name)
+        val db = DBHelper(requireContext())
+        val id = arguments?.getInt("id")?.toInt()
+
+        var list:MutableList<Contact> = db.getContacts()
+
+        for (i in list.indices){
+            if (list[i].id == id){
+                contact = list[i]
+            }
+        }
+
+        binding.name.setText(contact.name)
+        binding.phone.setText(contact.phone)
 
         binding.back.setOnClickListener{
             findNavController().navigate(R.id.action_editContactFragment_to_viewFragment)
+        }
+
+        binding.check.setOnClickListener {
+            db.editContact(contact)
+//            findNavController().navigate(R.id.action_editContactFragment_to_viewFragment)
         }
 
         return binding.root

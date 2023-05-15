@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.annotation.SuppressLint
 import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -32,6 +33,7 @@ class ContactsFragment : Fragment() {
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,8 +49,7 @@ class ContactsFragment : Fragment() {
         else{
             var adapter = ContactAdapter(contacts, object : ContactAdapter.ContactInterface{
                 override fun onClick(contact: Contact) {
-                    val bundle = bundleOf()
-                    bundle.putSerializable("contact",contact)
+                    val bundle = bundleOf("contact" to contact.id)
                     findNavController().navigate(R.id.action_contactsFragment_to_viewFragment,bundle)
                 }
 
@@ -64,6 +65,8 @@ class ContactsFragment : Fragment() {
             when(it.itemId){
                 R.id.search ->{
                     var filter = mutableListOf<Contact>()
+
+
 
                 }
             }
