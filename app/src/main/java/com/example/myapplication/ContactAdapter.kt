@@ -15,17 +15,23 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
-class ContactAdapter(var list:MutableList<Contact>, var context: Context, var activity: Activity, var contInterface: ContactInterface) : RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
+class ContactAdapter(
+    var list: MutableList<Contact>,
+    var context: Context,
+    var activity: Activity,
+    var contInterface: ContactInterface
+) : RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
 
-    class ContactHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        var name:TextView = itemView.findViewById(R.id.name)
-        var phone:TextView = itemView.findViewById(R.id.phone)
-        var contactlayout:ConstraintLayout = itemView.findViewById(R.id.cont_lay)
-        var call:ImageView = itemView.findViewById(R.id.imageView3)
+    class ContactHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        var name: TextView = itemView.findViewById(R.id.name)
+        var phone: TextView = itemView.findViewById(R.id.phone)
+        var call: ImageView = itemView.findViewById(R.id.imageView3)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
-        var holder = ContactHolder(LayoutInflater.from(parent.context).inflate(R.layout.contact_layout,parent,false))
+        var holder = ContactHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.contact_layout, parent, false)
+        )
         return holder
     }
 
@@ -42,10 +48,18 @@ class ContactAdapter(var list:MutableList<Contact>, var context: Context, var ac
     }
 
     private fun openCall(phone: String) {
-        if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, arrayOf(android.Manifest.permission.CALL_PHONE),1)
+        if (ContextCompat.checkSelfPermission(
+                context,
+                android.Manifest.permission.CALL_PHONE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                activity,
+                arrayOf(android.Manifest.permission.CALL_PHONE),
+                1
+            )
         } else {
-            if (phone.isNotEmpty()){
+            if (phone.isNotEmpty()) {
                 val callIntent = Intent(Intent.ACTION_CALL)
                 callIntent.data = Uri.parse("tel:$phone")
                 activity.startActivity(callIntent)
@@ -58,8 +72,8 @@ class ContactAdapter(var list:MutableList<Contact>, var context: Context, var ac
         return list.size
     }
 
-    interface ContactInterface{
-        fun onClick(contact: Contact){
+    interface ContactInterface {
+        fun onClick(contact: Contact) {
 
         }
     }

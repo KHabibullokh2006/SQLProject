@@ -21,26 +21,30 @@ class EditContactFragment : Fragment() {
     ): View? {
         val binding = FragmentEditContactBinding.inflate(inflater, container, false)
         val db = DBHelper(requireContext())
-        val id = arguments?.getInt("id")?.toInt()
+        val contact = arguments?.getSerializable("id") as Contact
 
-        var list:MutableList<Contact> = db.getContacts()
-
-        for (i in list.indices){
-            if (list[i].id == id){
-                contact = list[i]
-            }
-        }
+//        var list:MutableList<Contact> = db.getContacts()
+//
+//        for (i in list.indices){
+//            if (list[i].id == id){
+//                contact = list[i]
+//            }
+//        }
 
         binding.name.setText(contact.name)
         binding.phone.setText(contact.phone)
 
         binding.back.setOnClickListener{
-            findNavController().navigate(R.id.action_editContactFragment_to_viewFragment)
+            findNavController().popBackStack()
         }
 
         binding.check.setOnClickListener {
-            db.editContact(contact)
-//            findNavController().navigate(R.id.action_editContactFragment_to_viewFragment)
+            db.editContact(Contact(
+                id = contact.id,
+                name = contact.name,
+                phone = contact.phone
+            ))
+            findNavController().popBackStack()
         }
 
         return binding.root

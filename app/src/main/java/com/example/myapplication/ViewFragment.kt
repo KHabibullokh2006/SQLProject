@@ -50,7 +50,6 @@ class ViewFragment : Fragment() {
         val binding = FragmentViewBinding.inflate(inflater, container, false)
         val db = DBHelper(requireContext())
         val id = arguments?.getInt("contact")?.toInt()
-        Log.d("TAG", id.toString())
 
 
         var list:MutableList<Contact> = db.getContacts()
@@ -75,7 +74,7 @@ class ViewFragment : Fragment() {
         }
 
         binding.edit.setOnClickListener {
-            val id = bundleOf("id" to contact.id)
+            val id = bundleOf("id" to contact)
             findNavController().navigate(R.id.action_viewFragment_to_editContactFragment,id)
         }
 
