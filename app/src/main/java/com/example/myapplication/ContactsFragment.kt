@@ -44,7 +44,7 @@ class ContactsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val binding = FragmentContactsBinding.inflate(inflater,container,false)
-
+        val db = DBHelper(requireContext())
 
 
 
@@ -71,13 +71,13 @@ class ContactsFragment : Fragment() {
                 R.id.search ->{
                     var filter = mutableListOf<Contact>()
 
-                    binding.tv.visibility = View.GONE
-                    binding.editSearch.visibility = View.VISIBLE
-                    binding.editSearch.isFocusable = true
-                    binding.editSearch.requestFocus()
-
-                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                    imm.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
+//                    binding.tv.visibility = View.GONE
+//                    binding.editSearch.visibility = View.VISIBLE
+//                    binding.editSearch.isFocusable = true
+//                    binding.editSearch.requestFocus()
+//
+//                    val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//                    imm.showSoftInput(binding.editSearch, InputMethodManager.SHOW_IMPLICIT)
 
 
 //                    binding.editSearch.visibility = View.VISIBLE
@@ -142,6 +142,19 @@ class ContactsFragment : Fragment() {
                 }
                 R.id.za->{
                     contacts.sortByDescending { it.name }
+                    var adapter = ContactAdapter(contacts, requireContext(), requireActivity(), object : ContactAdapter.ContactInterface{
+                        override fun onClick(contact: Contact) {
+                            val bundle = bundleOf("contact" to contact.id)
+                            findNavController().navigate(R.id.action_contactsFragment_to_viewFragment,bundle)
+                        }
+
+                    })
+                    binding.contactRv.adapter = adapter
+                }
+                R.id.delete->{
+                    for (cont in contacts){
+                        db.deleteContact(cont)
+                    }
                     var adapter = ContactAdapter(contacts, requireContext(), requireActivity(), object : ContactAdapter.ContactInterface{
                         override fun onClick(contact: Contact) {
                             val bundle = bundleOf("contact" to contact.id)

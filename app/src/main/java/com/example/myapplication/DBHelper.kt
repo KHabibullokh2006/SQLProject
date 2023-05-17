@@ -37,7 +37,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
         val contentValues = ContentValues()
         contentValues.put("id",contact.id)
 
-        db.delete("contact","id = ?"+contact.id,null)
+        db.delete("contact","id = "+contact.id,null)
         db.close()
     }
 
@@ -47,7 +47,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, 1) {
         cv.put("name", contact.name)
         cv.put("phone_number", contact.phone)
 
-        writabledb.update("contact",cv,"id = " + contact.id,null)
+        writabledb.update("contact",cv,"id = ?" + contact.id,null)
 
     }
 
